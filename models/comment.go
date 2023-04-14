@@ -10,6 +10,8 @@ type Comment struct {
 	UserID  uint
 	PhotoID uint
 	Message string `gorm:"not null" json:"message" form:"message" valid:"required~Please input your message"`
+	Photo   *Photo
+	User    *User
 }
 
 func (c *Comment) BeforeCreate(tx *gorm.DB) (err error) {
@@ -17,6 +19,18 @@ func (c *Comment) BeforeCreate(tx *gorm.DB) (err error) {
 
 	if errCreate != nil {
 		err = errCreate
+		return
+	}
+
+	err = nil
+	return
+}
+
+func (c *Comment) BeforeUpdate(tx *gorm.DB) (err error) {
+	_, errUpdate := govalidator.ValidateStruct(c)
+
+	if errUpdate != nil {
+		err = errUpdate
 		return
 	}
 

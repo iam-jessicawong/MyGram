@@ -11,6 +11,7 @@ type Photo struct {
 	Caption  string `json:"caption" form:"caption"`
 	PhotoURL string `gorm:"not null" json:"photo_url" form:"photo_url" valid:"required~Your photo url is required,url~Please input valid url"`
 	UserID   uint
+	User     *User
 }
 
 func (p *Photo) BeforeCreate(tx *gorm.DB) (err error) {
@@ -18,6 +19,18 @@ func (p *Photo) BeforeCreate(tx *gorm.DB) (err error) {
 
 	if errCreate != nil {
 		err = errCreate
+		return
+	}
+
+	err = nil
+	return
+}
+
+func (p *Photo) BeforeUpdate(tx *gorm.DB) (err error) {
+	_, errUpdate := govalidator.ValidateStruct(p)
+
+	if errUpdate != nil {
+		err = errUpdate
 		return
 	}
 
