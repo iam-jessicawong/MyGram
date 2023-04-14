@@ -15,6 +15,15 @@ import (
 	"gorm.io/gorm"
 )
 
+// GetAllPhoto godoc
+// @Summary Get details
+// @Description Get details of all photo
+// @Tags photo
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.Photo
+// @Param Authorization header string true "Type Bearer your_token"
+// @Router /photo [get]
 func GetAllPhoto(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
@@ -34,6 +43,16 @@ func GetAllPhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, photo)
 }
 
+// GetOnePhoto godoc
+// @Summary Get details for a given id
+// @Description Get details of photo corresponding to the input id
+// @Tags photo
+// @Accept json
+// @Produce json
+// @Param id path int true "ID of the photo"
+// @Success 200 {object} models.Photo
+// @Param Authorization header string true "Type Bearer your_token"
+// @Router /photo/{id} [get]
 func GetOnePhoto(c *gin.Context) {
 	photoID, _ := strconv.Atoi(c.Param("id"))
 	photo, err := repositories.FindByIdPhoto(uint(photoID))
@@ -57,6 +76,23 @@ func GetOnePhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, &photo)
 }
 
+// this struct is for swagger custom body
+type InputPhoto struct {
+	Title    string `json:"title"`
+	Caption  string `json:"caption"`
+	PhotoURL string `json:"photo_url"`
+}
+
+// CreatePhoto godoc
+// @Summary Post new photo
+// @Description Post details of new photo corresponding to the input
+// @Tags photo
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param models.Photo body InputPhoto true "create photo"
+// @Success 201 {object} models.Photo
+// @Router /photo [post]
 func CreatePhoto(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
@@ -87,6 +123,18 @@ func CreatePhoto(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, &Photo)
 }
+
+// UpdatePhoto godoc
+// @Summary Update photo for a given id
+// @Description Update the photo corresponding to the input photo id
+// @Tags photo
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param id path int true "ID of the photo to be updated"
+// @Param models.Photo body InputPhoto true "update photo"
+// @Success 201 {object} models.Photo
+// @Router /photo/{id} [put]
 func UpdatePhoto(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
@@ -129,6 +177,16 @@ func UpdatePhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, &updatedPhoto)
 }
 
+// DeletePhoto godoc
+// @Summary Delete photo for a given id
+// @Description Update the photo corresponding to the input photo id
+// @Tags photo
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param id path int true "ID of the photo to be delete"
+// @Success 200 "deleted"
+// @Router /photo/{id} [delete]
 func DeletePhoto(c *gin.Context) {
 	photoID, _ := strconv.Atoi(c.Param("id"))
 

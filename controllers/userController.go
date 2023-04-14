@@ -23,12 +23,12 @@ type Credentials struct {
 
 // Register godoc
 // @Summary User registration
-// @Description Post details of new user
+// @Description Register new user account
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param User body User true "create user"
-// @Success 201 {object}
+// @Param models.User body models.User true "create user"
+// @Success 201 {object} models.User
 // @Router /user/register [post]
 func Register(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
@@ -71,6 +71,15 @@ func Register(c *gin.Context) {
 	})
 }
 
+// Login godoc
+// @Summary User login
+// @Description User login
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param Credentials body Credentials true "login user"
+// @Success 200 "token"
+// @Router /user/login [post]
 func Login(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
 	Credentials := Credentials{}

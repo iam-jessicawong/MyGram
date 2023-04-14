@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Photo represents the model for a Photo
 type Photo struct {
 	GormModel
 	Title    string `gorm:"not null;type:varchar(100)" json:"title" form:"title" valid:"required~Please give title to your photo"`

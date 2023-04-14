@@ -15,6 +15,15 @@ import (
 	"gorm.io/gorm"
 )
 
+// GetAllSocialMedia godoc
+// @Summary Get details
+// @Description Get details of all social media
+// @Tags social-media
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.SocialMedia
+// @Param Authorization header string true "Type Bearer your_token"
+// @Router /social-media [get]
 func GetAllSocialMedia(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
@@ -34,6 +43,16 @@ func GetAllSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, &social_media)
 }
 
+// GetOneSocialMedia godoc
+// @Summary Get details for a given id
+// @Description Get details of social media corresponding to the input id
+// @Tags social-media
+// @Accept json
+// @Produce json
+// @Param id path int true "ID of the social media"
+// @Success 200 {object} models.SocialMedia
+// @Param Authorization header string true "Type Bearer your_token"
+// @Router /social-media/{id} [get]
 func GetOneSocialMedia(c *gin.Context) {
 	socialmediaID, _ := strconv.Atoi(c.Param("id"))
 	social_media, err := repositories.FindByIdSocialMedia(uint(socialmediaID))
@@ -57,6 +76,21 @@ func GetOneSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, &social_media)
 }
 
+type SocialMediaInput struct {
+	Name           string `json:"name" form:"name"`
+	SocialMediaURL string `json:"social_media_url" form:"social_media_url"`
+}
+
+// CreateSocialMedia godoc
+// @Summary Post new social media
+// @Description Post details of new social media corresponding to the input
+// @Tags social-media
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param models.SocialMedia body SocialMediaInput true "create social media"
+// @Success 201 {object} models.SocialMedia
+// @Router /social-media [post]
 func CreateSocialMedia(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
@@ -90,6 +124,17 @@ func CreateSocialMedia(c *gin.Context) {
 	})
 }
 
+// UpdateSocialMedia godoc
+// @Summary Update social media for a given id
+// @Description Update the social media corresponding to the input social media id
+// @Tags social-media
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param id path int true "ID of the social media to be updated"
+// @Param models.SocialMedia body SocialMediaInput true "update social media"
+// @Success 201 {object} models.SocialMedia
+// @Router /social-media/{id} [put]
 func UpdateSocialMedia(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
@@ -134,6 +179,16 @@ func UpdateSocialMedia(c *gin.Context) {
 	})
 }
 
+// DeleteSocialMedia godoc
+// @Summary Delete social media for a given id
+// @Description Update the social media corresponding to the input social media id
+// @Tags social-media
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param id path int true "ID of the social media to be delete"
+// @Success 200 "deleted"
+// @Router /social-media/{id} [delete]
 func DeleteSocialMedia(c *gin.Context) {
 	socialmediaID, _ := strconv.Atoi(c.Param("id"))
 

@@ -1,0 +1,551 @@
+basePath: /
+definitions:
+  controllers.CommentInput:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.Credentials:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  controllers.InputPhoto:
+    properties:
+      caption:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+    type: object
+  controllers.SocialMediaInput:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+    type: object
+  models.Comment:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      photo:
+        $ref: '#/definitions/models.Photo'
+      photoID:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.Photo:
+    properties:
+      caption:
+        type: string
+      comments:
+        items:
+          $ref: '#/definitions/models.Comment'
+        type: array
+      created_at:
+        type: string
+      id:
+        type: integer
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.SocialMedia:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      age:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: soberkoder@swagger.io
+    name: API Support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/license/LICENSE-2.0.html
+  title: MyGram API
+  version: "1.0"
+paths:
+  /comment:
+    get:
+      consumes:
+      - application/json
+      description: Get details of all comment
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: Get details
+      tags:
+      - comment
+  /comment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Update the comment corresponding to the input comment id
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ID of the comment to be delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: deleted
+      summary: Delete comment for a given id
+      tags:
+      - comment
+    get:
+      consumes:
+      - application/json
+      description: Get details of comment corresponding to the input id
+      parameters:
+      - description: ID of the comment
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: Get details for a given id
+      tags:
+      - comment
+    put:
+      consumes:
+      - application/json
+      description: Update the comment corresponding to the input comment id
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ID of the comment to be updated
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update comment
+        in: body
+        name: models.Comment
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CommentInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: Update comment for a given id
+      tags:
+      - comment
+  /comment/{photoId}:
+    post:
+      consumes:
+      - application/json
+      description: Post details of new comment corresponding to the input
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the photo to comment
+        in: path
+        name: photoId
+        required: true
+        type: integer
+      - description: create comment
+        in: body
+        name: models.Comment
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CommentInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Comment'
+      summary: Post new comment
+      tags:
+      - comment
+  /photo:
+    get:
+      consumes:
+      - application/json
+      description: Get details of all photo
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: Get details
+      tags:
+      - photo
+    post:
+      consumes:
+      - application/json
+      description: Post details of new photo corresponding to the input
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: create photo
+        in: body
+        name: models.Photo
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.InputPhoto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: Post new photo
+      tags:
+      - photo
+  /photo/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Update the photo corresponding to the input photo id
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ID of the photo to be delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: deleted
+      summary: Delete photo for a given id
+      tags:
+      - photo
+    get:
+      consumes:
+      - application/json
+      description: Get details of photo corresponding to the input id
+      parameters:
+      - description: ID of the photo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: Get details for a given id
+      tags:
+      - photo
+    put:
+      consumes:
+      - application/json
+      description: Update the photo corresponding to the input photo id
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ID of the photo to be updated
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update photo
+        in: body
+        name: models.Photo
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.InputPhoto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Photo'
+      summary: Update photo for a given id
+      tags:
+      - photo
+  /social-media:
+    get:
+      consumes:
+      - application/json
+      description: Get details of all social media
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SocialMedia'
+      summary: Get details
+      tags:
+      - social-media
+    post:
+      consumes:
+      - application/json
+      description: Post details of new social media corresponding to the input
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: create social media
+        in: body
+        name: models.SocialMedia
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.SocialMediaInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.SocialMedia'
+      summary: Post new social media
+      tags:
+      - social-media
+  /social-media/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Update the social media corresponding to the input social media
+        id
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ID of the social media to be delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: deleted
+      summary: Delete social media for a given id
+      tags:
+      - social-media
+    get:
+      consumes:
+      - application/json
+      description: Get details of social media corresponding to the input id
+      parameters:
+      - description: ID of the social media
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SocialMedia'
+      summary: Get details for a given id
+      tags:
+      - social-media
+    put:
+      consumes:
+      - application/json
+      description: Update the social media corresponding to the input social media
+        id
+      parameters:
+      - description: Type Bearer your_token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ID of the social media to be updated
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update social media
+        in: body
+        name: models.SocialMedia
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.SocialMediaInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.SocialMedia'
+      summary: Update social media for a given id
+      tags:
+      - social-media
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: User login
+      parameters:
+      - description: login user
+        in: body
+        name: Credentials
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+      summary: User login
+      tags:
+      - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Register new user account
+      parameters:
+      - description: create user
+        in: body
+        name: models.User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: User registration
+      tags:
+      - user
+swagger: "2.0"

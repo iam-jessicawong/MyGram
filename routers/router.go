@@ -4,8 +4,24 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/iam-jessicawong/mygram/controllers"
 	"github.com/iam-jessicawong/mygram/middlewares"
+
+	_ "github.com/iam-jessicawong/mygram/docs"
+
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	swaggerFiles "github.com/swaggo/files"
 )
 
+// @title MyGram API
+// @version 1.0
+// description This is a simple service for managing mygram
+// @termOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.email soberkoder@swagger.io
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/license/LICENSE-2.0.html
+// @host localhost:8080
+// @BasePath /
 func StartApp() *gin.Engine {
 	r := gin.Default()
 
@@ -44,6 +60,8 @@ func StartApp() *gin.Engine {
 		socialMediaRouter.PUT("/:id", middlewares.Authorization(), controllers.UpdateSocialMedia)
 		socialMediaRouter.DELETE("/:id", middlewares.Authorization(), controllers.DeleteSocialMedia)
 	}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return r
 }

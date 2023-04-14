@@ -14,6 +14,15 @@ import (
 	"gorm.io/gorm"
 )
 
+// GetAllComment godoc
+// @Summary Get details
+// @Description Get details of all comment
+// @Tags comment
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.Comment
+// @Param Authorization header string true "Type Bearer your_token"
+// @Router /comment [get]
 func GetAllComment(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	userId := uint(userData["id"].(float64))
@@ -27,9 +36,22 @@ func GetAllComment(c *gin.Context) {
 		return
 	}
 
+	for _, comment := range comment {
+		comment.User.Password = ""
+	}
 	c.JSON(http.StatusOK, comment)
 }
 
+// GetOneComment godoc
+// @Summary Get details for a given id
+// @Description Get details of comment corresponding to the input id
+// @Tags comment
+// @Accept json
+// @Produce json
+// @Param id path int true "ID of the comment"
+// @Success 200 {object} models.Comment
+// @Param Authorization header string true "Type Bearer your_token"
+// @Router /comment/{id} [get]
 func GetOneComment(c *gin.Context) {
 	commentID, _ := strconv.Atoi(c.Param("id"))
 	comment, err := repositories.FindByIdComment(uint(commentID))
@@ -53,6 +75,21 @@ func GetOneComment(c *gin.Context) {
 	c.JSON(http.StatusOK, &comment)
 }
 
+type CommentInput struct {
+	Message string `json:"message" form:"message"`
+}
+
+// CreateComment godoc
+// @Summary Post new comment
+// @Description Post details of new comment corresponding to the input
+// @Tags comment
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param photoId path int true "id of the photo to comment"
+// @Param models.Comment body CommentInput true "create comment"
+// @Success 201 {object} models.Comment
+// @Router /comment/{photoId} [post]
 func CreateComment(c *gin.Context) {
 	photoID, errConvert := strconv.Atoi(c.Param("photoId"))
 	if errConvert != nil {
@@ -100,6 +137,17 @@ func CreateComment(c *gin.Context) {
 	c.JSON(http.StatusCreated, &Comment)
 }
 
+// UpdateComment godoc
+// @Summary Update comment for a given id
+// @Description Update the comment corresponding to the input comment id
+// @Tags comment
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param id path int true "ID of the comment to be updated"
+// @Param models.Comment body CommentInput true "update comment"
+// @Success 201 {object} models.Comment
+// @Router /comment/{id} [put]
 func UpdateComment(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
 	Comment := models.Comment{}
@@ -130,6 +178,16 @@ func UpdateComment(c *gin.Context) {
 	})
 }
 
+// DeleteComment godoc
+// @Summary Delete comment for a given id
+// @Description Update the comment corresponding to the input comment id
+// @Tags comment
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Type Bearer your_token"
+// @Param id path int true "ID of the comment to be delete"
+// @Success 200 "deleted"
+// @Router /comment/{id} [delete]
 func DeleteComment(c *gin.Context) {
 	commentID, _ := strconv.Atoi(c.Param("id"))
 
