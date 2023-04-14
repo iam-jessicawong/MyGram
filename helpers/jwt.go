@@ -34,12 +34,16 @@ func VerifyToken(c *gin.Context) (interface{}, error) {
 
 	stringToken := strings.Split(headerToken, " ")[1]
 
-	token, _ := jwt.Parse(stringToken, func(t *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(stringToken, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errResponse
 		}
 		return []byte(secretKey), nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
 
 	if _, ok := token.Claims.(jwt.MapClaims); !ok && !token.Valid {
 		return nil, errResponse
