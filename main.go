@@ -9,11 +9,13 @@ import (
 )
 
 func init() {
-	viper.SetConfigFile(".env")
+	viper.SetConfigFile("ENV")
+	viper.ReadInConfig()
+	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalln("Error loading env file:", err)
-	}
+	// if err := viper.ReadInConfig(); err != nil {
+	// 	log.Fatalln("Error loading env file:", err)
+	// }
 
 	log.Println("Env successfully loaded")
 }
