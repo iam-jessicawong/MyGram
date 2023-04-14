@@ -21,13 +21,21 @@ type Credentials struct {
 	Password string `json:"password" form:"password" valid:"required~Your password is required,minstringlength(6)~Password minimum lengths is 6 characters"`
 }
 
+type RegisterInput struct {
+	Username string `json:"username" form:"username"`
+	FullName string `json:"full_name" form:"full_name"`
+	Email    string `json:"email" form:"email"`
+	Password string `json:"password,omitempty" form:"password"`
+	Age      int32  `json:"age" form:"age"`
+}
+
 // Register godoc
 // @Summary User registration
 // @Description Register new user account
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param models.User body models.User true "create user"
+// @Param models.User body RegisterInput true "create user"
 // @Success 201 {object} models.User
 // @Router /user/register [post]
 func Register(c *gin.Context) {

@@ -21,6 +21,19 @@ definitions:
       title:
         type: string
     type: object
+  controllers.RegisterInput:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   controllers.SocialMediaInput:
     properties:
       name:
@@ -537,7 +550,7 @@ paths:
         name: models.User
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/controllers.RegisterInput'
       produces:
       - application/json
       responses:
