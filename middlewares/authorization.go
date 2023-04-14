@@ -16,9 +16,9 @@ var ErrUnauthorized error //for custom error
 func Authorization() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if c.Request.Method == "PUT" {
-			ErrUnauthorized = errors.New("you are not allowed to edit this product")
+			ErrUnauthorized = errors.New("you are not allowed to edit this data")
 		} else if c.Request.Method == "DELETE" {
-			ErrUnauthorized = errors.New("you are not allowed to delete this product")
+			ErrUnauthorized = errors.New("you are not allowed to delete this data")
 		}
 
 		id, errConvert := strconv.Atoi(c.Param("id"))

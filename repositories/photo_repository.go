@@ -9,7 +9,7 @@ func FindAllPhoto(uid uint) ([]models.Photo, error) {
 	db := database.GetDB()
 	Photos := []models.Photo{}
 
-	err := db.Debug().Preload("User").Find(&Photos, "user_id = ?", uid).Error
+	err := db.Debug().Preload("User").Preload("Comments").Find(&Photos, "user_id = ?", uid).Error
 	return Photos, err
 }
 
@@ -25,7 +25,7 @@ func FindByIdPhoto(id uint) (*models.Photo, error) {
 	db := database.GetDB()
 	Photo := models.Photo{}
 
-	err := db.Debug().Preload("User").First(&Photo, id).Error
+	err := db.Debug().Preload("User").Preload("Comments").First(&Photo, id).Error
 	return &Photo, err
 }
 
