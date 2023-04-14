@@ -838,7 +838,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "https://mygram-production-83b7.up.railway.app",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "MyGram API",

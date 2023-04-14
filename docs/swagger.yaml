@@ -106,7 +106,7 @@ definitions:
       username:
         type: string
     type: object
-host: localhost:8080
+host: https://mygram-production-83b7.up.railway.app
 info:
   contact:
     email: soberkoder@swagger.io
