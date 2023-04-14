@@ -37,3 +37,6 @@ MyGram is a web service where user can post photo, add comment on other user pho
 - Database: **PostgreSQL**
 - Environment Variable: **Viper**
 - API Documentation: **Swagger**
+
+## For API Documentation
+https://mygram-production-83b7.up.railway.app/swagger/index.html
